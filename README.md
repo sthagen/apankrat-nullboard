@@ -4,7 +4,7 @@ Nullboard is a minimalist take on a kanban board / a task list manager, designed
 
 https://nullboard.io/preview
 
-![Nullboard](https://nullboard.io/images/nullboard-example-alt.png?z)
+![Nullboard](images/nullboard-example-alt.png)
 
 The name also happens to abbreviate to [NB](https://en.wikipedia.org/wiki/Nota_bene), which I think is a nice touch.
 
@@ -16,7 +16,8 @@ The name also happens to abbreviate to [NB](https://en.wikipedia.org/wiki/Nota_b
 ## Locally stored
 
 * All data is stored locally, for now using [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage).
-* The data can also be exported to- or imported from a plain text file in a simple JSON format.
+* The data can be exported to- or imported from a plain text file in a simple JSON format.
+* The data can also be automatically backed up to a local disk (with the help of [Nullboard Agent](https://nullboard.io/backups)).
 
 ## Beta
 
@@ -28,47 +29,51 @@ The whole thing is largely about making it convenient to use.
 
 Everything is editable in place, all changes are saved automatically and last 50 revisions are kept for undo/redo:
 
-![In-place editing](https://nullboard.io/images/nullboard-inplace-editing.gif?x)
+![In-place editing](images/nullboard-inplace-editing.gif)
 
 New notes can be quickly added directly where they are needed, e.g. before or after existing notes:
 
-![Ctrl-add note](https://nullboard.io/images/nullboard-ctrl-add-note.gif?x)
+![Ctrl-add note](images/nullboard-ctrl-add-note.gif)
 
 Notes can also be dragged around, including to and from other lists:
 
-![Drag-n-drop](https://nullboard.io/images/nullboard-drag-n-drop.gif?x)
+![Drag-n-drop](images/nullboard-drag-n-drop.gif)
 
 Nearly all controls are hidden by default to reduce visual clutter to its minimum:
 
-![Hidden controls](https://nullboard.io/images/nullboard-hidden-controls.gif?x)
+![Hidden controls](images/nullboard-hidden-controls.gif)
 
 Longer notes can be collapsed to show just the first line, for even more compact view of the board:
 
-![Collapsed notes](https://nullboard.io/images/nullboard-collapsed-notes.gif?x)
+![Collapsed notes](images/nullboard-collapsed-notes.gif)
 
-The font is [Barlow](https://tribby.com/fonts/barlow/) - it's both narrow *and* still very legible. Absolutely fantastic design!
+The default font is [Barlow](https://tribby.com/fonts/barlow/) - it's both narrow *and* still very legible. Absolutely fantastic design!
 
-![Barlow speciment](https://nullboard.io/images/barlow-specimen.png?y)
+![Barlow speciment](images/barlow-specimen.png)
 
 Notes can also be set to look a bit different. This is useful for partitioning lists into sections:
 
-![Raw notes](https://nullboard.io/images/nullboard-raw-notes.gif?x)
+![Raw notes](images/nullboard-raw-notes.gif)
 
 Links starting with https:// and http:// are recognized. They will "pulse" on mouse hover and can be opened via the right-click menu.
 
-![Links on hover](https://nullboard.io/images/nullboard-links-on-hover.gif)
+![Links on hover](images/nullboard-links-on-hover.gif)
 
 Pressing CapsLock will highlight all links and make them left-clickable.
 
-![Links reveal](https://nullboard.io/images/nullboard-links-reveal.gif)
+![Links reveal](images/nullboard-links-reveal.gif)
 
 Lists can be moved around as well, though not as flashy as notes:
 
-![List swapping](https://nullboard.io/images/nullboard-list-swap.gif?x)
+![List swapping](images/nullboard-list-swap.gif)
 
-The color theme can be inversed and the font size can be increased:
+The font can be changed; its size and line height can be adjusted:
 
-![Theme and zoom](https://nullboard.io/images/nullboard-theme-and-zoom.gif?x)
+![Theme and zoom](images/nullboard-ui-preferences.gif)
+
+The color theme can be inverted:
+
+![Dark theme](images/nullboard-dark-theme.gif)
 
 Also:
 
@@ -120,3 +125,5 @@ That is, you can use, change and re-distribute it for as long as you don't try a
 ## Updates
 
 Primary feed is through [@nullboard](https://twitter.com/nullboard) on Twitter.
+
+The changelog is here => https://nullboard.io/changes
