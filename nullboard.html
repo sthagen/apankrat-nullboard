@@ -1688,8 +1688,8 @@
 
 </body>
 
-<script src="extras/jquery-3.3.1.min.js"></script>
-<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.3.1.min.js">\x3C/script>')</script>
+<script src="extras/jquery-3.6.0.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js">\x3C/script>')</script>
 
 <script type="text/javascript">
 
@@ -1697,6 +1697,15 @@
 	{
 		return Math.min(Math.max(this, min), max);
 	};
+
+	/* 
+	 *	add a blank line to push 'Prevent this page from opening ...'
+	 *	tack-on from the actual message we are trying to display
+	 */
+	var confirm_org = window.confirm;
+	var alert_org   = window.alert;
+	window.confirm = function(msg) { return confirm_org(msg + "\n "); }
+	window.alert   = function(msg) { return alert_org  (msg + "\n "); }
 
 </script>
 
@@ -3454,7 +3463,7 @@
 			return "Required board properties are empty.";
 
 		if (foo.format != NB.blobVersion)
-			return `Unsupported blob format "${board.format}", expecting "${NB.blobVersion}".`;
+			return `Unsupported blob format "${foo.format}", expecting "${NB.blobVersion}".`;                        
 
 		return null;
 	}
@@ -3501,15 +3510,48 @@
 		if (! confirm(msg))
 			return false;
 
+		var to_open = '';
+
 		for (var i=0; i<data.length; i++)
 		{
 			var board = data[i];
+			var check_title = true;
+
+			// check ID
 
 			if (index.has(board.id))
 			{
-				console.log(`Import: board ${board.id} (${board.title}) will be assigned new ID`);
-				board.id = +new Date();
+				var which = (data.length == 1) ? "with the same ID" : board.id;
+
+				if (confirm(`Board ${which} already exists. Overwrite it?`) &&
+				    confirm(`OVERWRITE for sure?`))
+				{
+					console.log(`Import: ${board.id} (${board.title} - will overwrite existing one`);
+					check_title = false;
+				}
+				else
+				if (confirm(`Import the board under a new ID?`))
+				{
+					var new_id = +new Date();
+					console.log(`Import: ${board.id} (${board.title} - will import as ${new_id}`);
+					board.id = new_id;
+				}
+				else
+				{
+					console.log(`Import: ${board.id} (${board.title} - ID conflict, will not import`);
+					continue;
+				}
 			}
+
+			if (check_title)
+			{
+				var retitle = false;
+				index.forEach( have => { retitle |= (have.title == board.title) } );
+
+				if (retitle) board.title += ' (imported)';
+			}
+
+			// ok, do the deed
 
 			board.revision--; // save will ++ it back
 
@@ -3518,9 +3560,11 @@
 				alert(`Failed to save board ${board.id}. Import failed.`);
 				return false;
 			}
+
+			if (! to_open) to_open = data[0].id;
 		}
 
-		openBoard(data[0].id);
+		if (to_open) openBoard(to_open);
 	}
 
 	/*
@@ -5022,7 +5066,7 @@
 	 */
 	var NB =
 	{
-		codeVersion: 20211210,
+		codeVersion: 20220810,
 		blobVersion: 20190412, // board blob format in Storage
 		board: null,
 		storage: null,
