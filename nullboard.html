@@ -262,7 +262,7 @@
 		user-select: none;
 	}
 
-	body.crowded .board {
+	.crowded .board {
 		margin-top: 28px;
 	}
 
@@ -689,7 +689,7 @@
 		background: #f8f9fb;
 	}
 
-	body.crowded .logo:hover {
+	.crowded .logo:hover {
 		background: #fff;
 		box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 	}
@@ -1307,11 +1307,23 @@
 
 		.board .note {
 			box-shadow: none;
-			outline: 1px solid #ccc;
+			text-shadow: none !important;
+			outline: 1px solid #888;
+		}
+		.list {
+			outline: 1px solid #555;
+
+		}
+		.board .note .raw {
+			outline: none;
+			text-shadow: none;
 		}
 
-		.board .note.raw {
-			outline: none;
+		.board .head .text a,
+		.board .note .text a {
+			color: #333;
+			text-shadow: none;
+			text-decoration: underline;
 		}
 	}
 
@@ -1459,7 +1471,7 @@
 
 	.theme-dark .logo,
 	.theme-dark.crowded .logo:hover {
-		background: #09090A;
+		background: #09090A !important;
 	}
 
 	.theme-dark .logo a:hover {
@@ -3394,7 +3406,7 @@
 			'raw note.","raw":true,"min":false},{"text":"This is a collapsed note. Only its first line is visible. Useful f' +
 			'or keeping lists compact.","raw":false,"min":true}, {"text":"Links","raw":true,"min":false}, {"text":"Links pu' +
 			'lse on hover and can be opened via the right-click menu  -  https://nullboard.io","raw":false,"min":false}, {"tex' +
-			't":"Pressing CapsLock highlights all links and makes them left-clickable.","raw":false,"min":false}]},{"title"' +
+			't":"Pressing CapsLock or Control highlights all links and makes them left-clickable.","raw":false,"min":false}]},{"title"' +
 			':"More things to try","notes":[{"text":"\u2022   Drag notes around to rearrange.\\n\u2022   Works between the ' +
 			'lists too.","raw":false,"min":false},{"text":"\u2022   Click on a list name to edit.\\n\u2022   Enter to save,' +
 			' Esc to cancel.","raw":false,"min":false},{"text":"\u2022   Try adding a new list.\\n\u2022   Try deleting one' +
@@ -4158,10 +4170,10 @@
 	function setRevealState(ev)
 	{
 		var raw = ev.originalEvent;
-		var caps = raw.getModifierState && raw.getModifierState( 'CapsLock' );
+		var do_reveal = raw.getModifierState && (raw.getModifierState( 'CapsLock' ) || raw.getModifierState( 'Control' ));
 
-		if (caps) $('body').addClass('reveal');
-		else      $('body').removeClass('reveal');
+		if (do_reveal) $('body').addClass('reveal');
+		else           $('body').removeClass('reveal');
 	}
 
 	//
@@ -4432,6 +4444,9 @@
 
 			if (conf.lineHeight)
 				setLineHeight(conf.lineHeight);
+
+			if (conf.listWidth)
+				setListWidth(conf.listWidth);
 
 			updateVarsAndLayout();
 		}
@@ -5066,7 +5081,7 @@
 	 */
 	var NB =
 	{
-		codeVersion: 20220810,
+		codeVersion: 20221112,
 		blobVersion: 20190412, // board blob format in Storage
 		board: null,
 		storage: null,
