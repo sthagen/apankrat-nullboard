@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
   <!--
@@ -46,6 +46,7 @@
 
   -->
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nullboard</title>
   <link rel="icon" href="extras/favicon-16.png"/>
   <style>
@@ -220,7 +221,7 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
-}
+
 	/***/
 	.clearfix:after,
 	.board:after,
@@ -1710,7 +1711,7 @@
 		return Math.min(Math.max(this, min), max);
 	};
 
-	/* 
+	/*
 	 *	add a blank line to push 'Prevent this page from opening ...'
 	 *	tack-on from the actual message we are trying to display
 	 */
@@ -1747,6 +1748,14 @@
 
 		this.backupStatus = { };            // agentId => [ 'conf' ]
 	}
+
+	const default_backup_agents =
+	[
+		{ base: 'http://127.0.0.1:10001', auth: '' }, // local agent
+		{ base: '', auth: '' }                        // remote agent
+	];
+
+	//
 
 	function BoardMeta()
 	{
@@ -1985,7 +1994,7 @@
 			var meta = this.boardIndex.get(board_id);
 
 			if (! meta)
-				throw `Invalid board_id in nukeBoard(${board.id})`;
+				throw `Invalid board_id in nukeBoard(${board_id})`;
 
 			var title = meta.title + '';
 
@@ -2038,7 +2047,7 @@
 			var meta = this.boardIndex.get(board_id);
 
 			if (! meta)
-				throw `Invalid board_id in setBoardRevision(${board_id}, ${revision})`;
+				throw `Invalid board_id in setBoardUiSpot(${board_id}, ${ui_spot})`;
 
 			meta.ui_spot = ui_spot;
 
@@ -2101,22 +2110,26 @@
 			    agents[0].type != simp || agents[0].conf.base != 'http://127.0.0.1:10001' ||
 			    agents[1].type != simp)
 			{
+				const def = default_backup_agents;
+
 				console.log('Unexpected backup config, will re-initialize.', agents);
 
 				conf.backups.agents = [];
 
 				conf.backups.agents.push({
-					type: simp,
-					id: simp + '-' + (conf.backups.nextId++),
-					enabled: false,
-					conf: { base: 'http://127.0.0.1:10001', auth: '' }
+					// localhost
+					type    : simp,
+					id      : simp + '-' + (conf.backups.nextId++),
+					enabled : def[0].base && def[0].auth,
+					conf    : def[0],
 				})
 
 				conf.backups.agents.push({
-					type: simp,
-					id: simp + '-' + (conf.backups.nextId++),
-					enabled: false,
-					conf: { base: '', auth: '' }
+					// remote
+					type    : simp,
+					id      : simp + '-' + (conf.backups.nextId++),
+					enabled : def[1].base && def[1].auth,
+					conf    : def[1],
 				})
 
 				this.saveConfig();
@@ -3475,7 +3488,7 @@
 			return "Required board properties are empty.";
 
 		if (foo.format != NB.blobVersion)
-			return `Unsupported blob format "${foo.format}", expecting "${NB.blobVersion}".`;                        
+			return `Unsupported blob format "${foo.format}", expecting "${NB.blobVersion}".`;
 
 		return null;
 	}
@@ -5081,7 +5094,7 @@
 	 */
 	var NB =
 	{
-		codeVersion: 20221112,
+		codeVersion: 20231105,
 		blobVersion: 20190412, // board blob format in Storage
 		board: null,
 		storage: null,
